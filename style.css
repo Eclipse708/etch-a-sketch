@@ -1,0 +1,26 @@
+body {
+    background-color: black;
+    /* height: 100vh; */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    padding-top: 0;
+    padding-bottom: 10px;
+    /* min-height: 90%; */
+}
+
+.gridRow {
+    display: flex;
+    justify-content: center;
+}
+
+.cells {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: aqua;
+    box-sizing: border-box;
+}
