@@ -1,46 +1,64 @@
 const container = document.querySelector(".container");
-let rowsArray  = [];
-const rows = document.createElement("div");
-rows.className ='gridRow';
-const cells = document.createElement("div");
-cells.className ='cells';
-colNum = 16;
-rowNum = 16;
-let cellWidth = innerWidth/colNum;
-let cellHeight = innerHeight/rowNum;
-console.log('inner width' + innerWidth);
-console.log('inner height' + innerHeight);
-function makeRows(rowNum) {
-    // let gridHeight = 400/rowNum;
-    console.log('inner height' + innerHeight);
-    for (let i = 0; i < rowNum; i++) {
-        let row = document.createElement('div');
-        row.className = 'gridRow';
-        row.style.height = cellHeight+'px';
-        console.log("height " + row.style.height);
-        container.appendChild(row);
-        rowsArray.push(row);
+const gridGeneratorBtn = document.createElement('button');
+const resetBtn = document.createElement('button');
+gridGeneratorBtn.innerText = 'Grid Generator';
+resetBtn.innerText = 'Reset';
+gridGeneratorBtn.classList.add('gridGenBtn');
+resetBtn.classList.add('resetBtn');
+let grid = document.createElement('div');
+grid.classList.add('grid');
+let gridSize = 790;
+let colNum = 16;
+container.appendChild(gridGeneratorBtn);
+container.appendChild(resetBtn);
+
+function generateGrid() {
+    let gridWidth = gridSize/colNum;
+    container.appendChild(grid);
+    for (let i = 0; i < colNum; i++) {
+    const rows = document.createElement("div");
+    rows.classList.add('gridRow');
+    for (let j = 0; j < colNum; j++) {
+        const cells = document.createElement("div");
+        cells.classList.add('cells');
+        cells.style.width = gridWidth + 'px';
+        cells.style.height = gridWidth + 'px';
+        rows.appendChild(cells);
+    
+        cells.addEventListener('mouseover', (e) => {
+            let randColor =    
+            Math.floor(Math.random()*16777215).toString(16);
+            color = '#' + randColor;
+            e.target.style.backgroundColor = color;
+            e.target.style.opacity = parseFloat(e.target.style.opacity) + 0.1;      
+        });
     }
-    return rowsArray;
+    grid.appendChild(rows);
 }
-function makeColumns(colNum) {
-    console.log('inner width' + innerWidth);
-    // let gridWidth = 400/colNum;
-    for (let i = 0; i < rowsArray.length; i++) {
-        let row = rowsArray[i];
-        for (let j = 0; j < colNum; j++) {
-            let column = document.createElement('div');
-            column.className = 'cells';
-            column.style.width = cellWidth+'px';
-            console.log( "width " + column.style.width);
-            row.appendChild(column);
-        }
-    }
 }
 
-function defaultGrid() {
-    makeRows(rowNum);
-    makeColumns(colNum);
-}
+gridGeneratorBtn.addEventListener('click', () => {
+    colNum = prompt('Enter a number between 1-100');
+    if (colNum > 100) {
+        alert('Enter a number less than 100')
+    }
+    else if (isNaN(colNum)) {
+        alert('Enter a number');
+    }
+    else {
+        document.querySelectorAll('.gridRow')
+        .forEach((element) => 
+            element.parentNode.removeChild(element));
+        generateGrid();
+    }
+})
 
-document.addEventListener("DOMContentLoaded", defaultGrid);
+resetBtn.addEventListener('click', () => {
+    document.querySelectorAll('.gridRow')
+        .forEach((element) => 
+            element.parentNode.removeChild(element));
+    colNum = 16;
+    generateGrid();
+});
+
+document.addEventListener("DOMContentLoaded", generateGrid);
